@@ -11,6 +11,11 @@ public class Device {
         deviceType = deviceTypeConvert(deviceTypeInput);
     }
 
+    public void setPath(String pathInput){
+        path = pathInput;
+        System.out.println(path);
+    }
+
     private DeviceType deviceTypeConvert(String deviceType) {
         switch (deviceType){
             case "Kindle":

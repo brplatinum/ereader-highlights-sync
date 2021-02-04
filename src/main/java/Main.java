@@ -11,17 +11,26 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class Main extends Application {
 
+    //UI Elements
     Button btnDeviceInfo;
     ComboBox cmbDeviceType;
+    Button btnChooseDevicePath;
+
     Device device;
+
+    DirectoryChooser directoryChooser;
 
     @Override
     public void start(Stage stage) {
         device = new Device();
+        directoryChooser = new DirectoryChooser();
 
         GridPane grid = new GridPane();
 
@@ -40,10 +49,23 @@ public class Main extends Application {
         cmbDeviceType.setItems(deviceTypeOptions);
         cmbDeviceType.valueProperty().addListener(new ChangeListener() {
             @Override
-            public void changed(ObservableValue observableValue, Object o, Object t1) {
-                device.setDeviceType((String) t1);
+            public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
+                device.setDeviceType((String) newValue);
             }
         });
+
+        btnChooseDevicePath = new Button();
+        btnChooseDevicePath.setText("Choose Device Path");
+        btnChooseDevicePath.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                File file = directoryChooser.showDialog(stage);
+
+                device.setPath(file.toString());
+            }
+        });
+
+        grid.add(btnChooseDevicePath, 3, 0);
 
         grid.add(cmbDeviceType, 2, 0);
 
