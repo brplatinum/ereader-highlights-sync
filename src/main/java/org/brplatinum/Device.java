@@ -72,17 +72,22 @@ public class Device {
         Matcher matcher = highlightsInfo.matcher(highlightsStringClump);
 
         while (matcher.find()) {
-            addBook(matcher.group("title"), matcher.group("author"));
+            Highlight newHighlight;
             if (matcher.group("locationName") != null) {
-                addHighlightToBook(matcher.group("title"), matcher.group("author"), new Highlight())
+                newHighlight = new Highlight(matcher.group("highlight"), Integer.valueOf(matcher.group("locationStart")), Integer.valueOf(matcher.group("locationEnd")));
+            } else {
+                newHighlight = new Highlight(matcher.group("highlight"), Integer.valueOf(matcher.group("altLocationStart")), Integer.valueOf(matcher.group("altLocationEnd")));
+
             }
+            addHighlightToBook(matcher.group("title"), matcher.group("author"), newHighlight);
         }
     }
 
-    private void addBook(String title, String author) {
+    private void addHighlightToBook(String title, String author, Highlight newHighlight) {
         if (!books.containsKey(title + author)) {
-            books.put(title + author, new Book(title, author));
+            books.put(title + author, new Book(title, author)); //Creates a new, no-highlight book and adds to the HashMap
         }
+        books.get(title+author).addHighlight(newHighlight);
     }
 
     private String removeUnusualCharacters(String str) {

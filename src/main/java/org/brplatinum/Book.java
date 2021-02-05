@@ -19,8 +19,8 @@ public class Book {
         highlights = new ArrayList<Highlight>();
     }
 
-    public void addHighlight(String highlightText){
-        highlights.add(new Highlight());
+    public void addHighlight(Highlight newHighlight){
+        highlights.add(new Highlight(newHighlight));
     }
 
 }

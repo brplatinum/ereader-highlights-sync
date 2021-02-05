@@ -18,4 +18,22 @@ public class Highlight {
         this.locationEnd = locationEnd;
     }
 
+    public Highlight(Highlight newHighlight){
+        text = newHighlight.getText();
+        locationStart = newHighlight.getLocationStart();
+        locationEnd = newHighlight.getLocationEnd();
+    }
+
+    public String getText(){
+        return text;
+    }
+
+    public int getLocationStart(){
+        return locationStart;
+    }
+
+    public int getLocationEnd(){
+        return locationEnd;
+    }
+
 }
