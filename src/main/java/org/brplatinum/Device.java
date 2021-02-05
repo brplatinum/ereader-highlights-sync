@@ -71,19 +71,17 @@ public class Device {
         Pattern highlightsInfo = Pattern.compile(highlightsRegex);
         Matcher matcher = highlightsInfo.matcher(highlightsStringClump);
 
-        while(matcher.find()){
-
-            if (matcher.group("locationName") != null){
-
+        while (matcher.find()) {
+            addBook(matcher.group("title"), matcher.group("author"));
+            if (matcher.group("locationName") != null) {
+                addHighlightToBook(matcher.group("title"), matcher.group("author"), new Highlight())
             }
         }
     }
 
-    private void addBook(String title, String author){
-        if (books.containsKey(title+author)){
-
-        } else {
-            books.put(title+author, new Book(title, author));
+    private void addBook(String title, String author) {
+        if (!books.containsKey(title + author)) {
+            books.put(title + author, new Book(title, author));
         }
     }
 

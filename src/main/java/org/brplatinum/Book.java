@@ -13,11 +13,14 @@ public class Book {
         highlights = new ArrayList<Highlight>();
     }
 
-    public Book(String author, String title) {
-        this.author = author;
+    public Book(String title, String author) {
         this.title = title;
+        this.author = author;
         highlights = new ArrayList<Highlight>();
     }
-    
+
+    public void addHighlight(String highlightText){
+        highlights.add(new Highlight());
+    }
 
 }
