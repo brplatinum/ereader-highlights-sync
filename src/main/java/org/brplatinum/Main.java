@@ -1,16 +1,15 @@
+package org.brplatinum;
+
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
@@ -20,8 +19,13 @@ public class Main extends Application {
 
     //UI Elements
     Button btnDeviceInfo;
-    ComboBox cmbDeviceType;
     Button btnChooseDevicePath;
+    Button btnExtractHighlights;
+
+    ComboBox cmbDeviceType;
+
+    Label lblDevicePath;
+
 
     Device device;
 
@@ -53,21 +57,27 @@ public class Main extends Application {
                 device.setDeviceType((String) newValue);
             }
         });
+        grid.add(cmbDeviceType, 2, 0);
 
         btnChooseDevicePath = new Button();
         btnChooseDevicePath.setText("Choose Device Path");
-        btnChooseDevicePath.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                File file = directoryChooser.showDialog(stage);
+        btnChooseDevicePath.setOnAction(actionEvent -> {
+            File file = directoryChooser.showDialog(stage);
 
-                device.setPath(file.toString());
-            }
+            device.setPath(file.toString());
+
+            lblDevicePath = new Label();
+            lblDevicePath.setText(file.toString());
+            grid.add(lblDevicePath, 4, 0);
         });
-
         grid.add(btnChooseDevicePath, 3, 0);
 
-        grid.add(cmbDeviceType, 2, 0);
+        btnExtractHighlights = new Button();
+        btnExtractHighlights.setText("Extract Highlights");
+        btnExtractHighlights.setOnAction(actionEvent -> {
+            device.extractHighlights();
+        });
+        grid.add(btnExtractHighlights, 5, 0);
 
         Scene scene = new Scene(grid, 300, 250);
         stage.setScene(scene);

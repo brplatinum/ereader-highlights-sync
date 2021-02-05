@@ -1,3 +1,5 @@
+package org.brplatinum;
+
 public class Location {
     private int start;
     private int end;

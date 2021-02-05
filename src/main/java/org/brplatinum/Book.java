@@ -1,3 +1,5 @@
+package org.brplatinum;
+
 import java.util.*;
 
 public class Book {
@@ -16,5 +18,6 @@ public class Book {
         this.title = title;
         highlights = new ArrayList<Highlight>();
     }
+    
 
 }

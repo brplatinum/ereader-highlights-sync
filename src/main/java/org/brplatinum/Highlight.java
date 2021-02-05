@@ -1,3 +1,5 @@
+package org.brplatinum;
+
 public class Highlight {
     private String text;
     private String note;
