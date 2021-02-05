@@ -1,6 +1,6 @@
 package org.brplatinum;
 
-public class Highlight {
+public class Highlight implements Comparable<Highlight>{
     private String text;
     private String note;
     private int locationStart;
@@ -16,12 +16,16 @@ public class Highlight {
         this.text = text;
         this.locationStart = locationStart;
         this.locationEnd = locationEnd;
+
+        note = null;
     }
 
     public Highlight(Highlight newHighlight){
         text = newHighlight.getText();
         locationStart = newHighlight.getLocationStart();
         locationEnd = newHighlight.getLocationEnd();
+
+        note = null;
     }
 
     public String getText(){
@@ -36,4 +40,12 @@ public class Highlight {
         return locationEnd;
     }
 
+    public void setNote(String noteInput) {
+        note = noteInput;
+    }
+
+    @Override
+    public int compareTo(Highlight otherHighlight) {
+        return locationEnd - otherHighlight.getLocationEnd();
+    }
 }

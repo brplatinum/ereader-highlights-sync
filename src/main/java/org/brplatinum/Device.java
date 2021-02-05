@@ -37,6 +37,7 @@ public class Device {
         switch (deviceType) {
             case KINDLE:
                 kindleExtractHighlights();
+                kindleExtractNotes();
             case KOBO:
                 koboExtractHighlights();
         }
@@ -55,19 +56,6 @@ public class Device {
             System.err.print(e.toString());
         }
 
-//        highlightsStringClump = removeUnusualCharacters(highlightsStringClump);
-
-        try {
-            FileWriter myWriter = new FileWriter("filename.txt");
-            myWriter.write(highlightsStringClump);
-            myWriter.close();
-            System.out.println("Successfully wrote to the file.");
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-
-        System.out.println(filePath);
         Pattern highlightsInfo = Pattern.compile(highlightsRegex);
         Matcher matcher = highlightsInfo.matcher(highlightsStringClump);
 
@@ -83,11 +71,38 @@ public class Device {
         }
     }
 
+    private void kindleExtractNotes() {
+        String notesRegex = "(?<title>.+) \\((?<author>.+)\\)\r\n- Your Note at location (?<location>[0-9]+) \\| Added on (?<date>.+)\r\n\r\n(?<note>.+)\r\n==========";
+        String separator = System.getProperty("file.separator");
+        Path filePath = Paths.get(path + "documents" + separator + "My Clippings.txt" + separator);
+        System.out.println("exists?" + new File(path + "documents" + separator + "My Clippings.txt" + separator).exists());
+        String notesClump = "";
+
+        try {
+            notesClump = Files.readString(filePath, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            System.err.print(e.toString());
+        }
+
+        Pattern notesInfo = Pattern.compile(notesRegex);
+        Matcher matcher = notesInfo.matcher(notesClump);
+
+        while (matcher.find()) {
+            addNoteToHighlight(matcher.group("title"), matcher.group("author"), matcher.group("note"), Integer.parseInt(matcher.group("location")));
+        }
+    }
+
     private void addHighlightToBook(String title, String author, Highlight newHighlight) {
         if (!books.containsKey(title + author)) {
             books.put(title + author, new Book(title, author)); //Creates a new, no-highlight book and adds to the HashMap
         }
-        books.get(title+author).addHighlight(newHighlight);
+        books.get(title + author).addHighlight(newHighlight);
+    }
+
+    private void addNoteToHighlight(String title, String author, String note, int location) {
+        if (books.containsKey(title + author)) {
+            books.get(title + author).addNote(note, location); //Creates a new, no-highlight book and adds to the HashMap
+        }
     }
 
     private String removeUnusualCharacters(String str) {
@@ -100,7 +115,7 @@ public class Device {
 
     }
 
-    private DeviceType deviceTypeConvert(String deviceType) {
+    private DeviceType deviceTypeConvert(String deviceType) { //Maps the string name of the device type to the enum
         return switch (deviceType) {
             case "Kindle" -> DeviceType.KINDLE;
             case "Kobo" -> DeviceType.KOBO;
