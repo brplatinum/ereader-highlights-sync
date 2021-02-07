@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,7 +48,6 @@ public class Device {
         String highlightsRegex = "(?<title>.+) \\((?<author>.+)\\)\r\n- ((Your Highlight on page (?<page>[0-9]+) \\| location (?<locationStart>[0-9]+)-(?<locationEnd>[0-9]+))|(Your Highlight at location (?<altLocationStart>[0-9]+)-(?<altLocationEnd>[0-9]+))) \\| Added on (?<date>.+)\r\n\r\n(?<highlight>.+)\r\n==========";
         String separator = System.getProperty("file.separator");
         Path filePath = Paths.get(path + "documents" + separator + "My Clippings.txt" + separator);
-        System.out.println("exists?" + new File(path + "documents" + separator + "My Clippings.txt" + separator).exists());
         String highlightsStringClump = "";
 
         try {
@@ -62,9 +62,9 @@ public class Device {
         while (matcher.find()) {
             Highlight newHighlight;
             if (matcher.group("locationStart") != null) {
-                newHighlight = new Highlight(matcher.group("highlight"), Integer.valueOf(matcher.group("locationStart")), Integer.valueOf(matcher.group("locationEnd")));
+                newHighlight = new Highlight(matcher.group("highlight"), Integer.valueOf(matcher.group("locationStart")), Integer.valueOf(matcher.group("locationEnd")), matcher.group("date"));
             } else {
-                newHighlight = new Highlight(matcher.group("highlight"), Integer.valueOf(matcher.group("altLocationStart")), Integer.valueOf(matcher.group("altLocationEnd")));
+                newHighlight = new Highlight(matcher.group("highlight"), Integer.valueOf(matcher.group("altLocationStart")), Integer.valueOf(matcher.group("altLocationEnd")), matcher.group("date"));
 
             }
             addHighlightToBook(matcher.group("title"), matcher.group("author"), newHighlight);
@@ -110,6 +110,10 @@ public class Device {
 
     }
 
+    public void extractToCSV() {
+        File csvFile = new File(deviceType.toString().toLowerCase() + "_highlights_" + System.currentTimeMillis()+".csv");
+    }
+
     private DeviceType deviceTypeConvert(String deviceType) { //Maps the string name of the device type to the enum
         return switch (deviceType) {
             case "Kindle" -> DeviceType.KINDLE;
@@ -119,9 +123,9 @@ public class Device {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         String output = "";
-        for(String currentKey : books.keySet()){
+        for (String currentKey : books.keySet()) {
             output += books.get(currentKey).toString();
         }
         return output;

@@ -1,10 +1,14 @@
 package org.brplatinum;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Highlight{
     private String text;
     private String note;
     private int locationStart;
     private int locationEnd;
+    private LocalDateTime date;
 
     public Highlight(){
         text = null;
@@ -12,11 +16,11 @@ public class Highlight{
         locationStart = -1;
         locationEnd = -1;
     }
-    public Highlight(String text, int locationStart, int locationEnd){
+    public Highlight(String text, int locationStart, int locationEnd, String date){
         this.text = text;
         this.locationStart = locationStart;
         this.locationEnd = locationEnd;
-
+        this.date = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("d M Y H:m:s"));
         note = null;
     }
 
