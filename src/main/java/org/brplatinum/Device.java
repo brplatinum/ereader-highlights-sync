@@ -7,10 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,7 +48,7 @@ public class Device {
         String highlightsStringClump = "";
 
         try {
-            highlightsStringClump = Files.readString(filePath, StandardCharsets.UTF_8);
+            highlightsStringClump = removeBOM(Files.readString(filePath, StandardCharsets.UTF_8));
         } catch (IOException e) {
             System.err.print(e.toString());
         }
@@ -79,7 +76,7 @@ public class Device {
         String notesClump = "";
 
         try {
-            notesClump = Files.readString(filePath, StandardCharsets.UTF_8);
+            notesClump = removeBOM(Files.readString(filePath, StandardCharsets.UTF_8));
         } catch (IOException e) {
             System.err.print(e.toString());
         }
@@ -110,8 +107,32 @@ public class Device {
 
     }
 
-    public void extractToCSV() {
-        File csvFile = new File(deviceType.toString().toLowerCase() + "_highlights_" + System.currentTimeMillis()+".csv");
+    public void exportToCSV() {
+        String headerRow = "Title,Author,Highlight,Location,Date,Note";
+        File csvFile = new File(deviceType.toString().toLowerCase() + "_highlights_" + System.currentTimeMillis() + ".csv");
+
+        try {
+            csvFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            FileWriter csvWriter = new FileWriter(csvFile);
+            csvWriter.write(headerRow + "\n");
+
+            for (String currentKey : books.keySet()) {
+                String[] bookHighlights = books.get(currentKey).highlightsToCSV();
+                for (String highlight : bookHighlights) {
+                    String lineOutput = CSVHelper.csvFix(books.get(currentKey).getTitle()) + "," + CSVHelper.csvFix(books.get(currentKey).getAuthor()) + highlight;
+                    csvWriter.write(lineOutput + "\n");
+                }
+            }
+
+            csvWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private DeviceType deviceTypeConvert(String deviceType) { //Maps the string name of the device type to the enum
@@ -120,6 +141,13 @@ public class Device {
             case "Kobo" -> DeviceType.KOBO;
             default -> null;
         };
+    }
+
+    private static String removeBOM(String s) {
+        if (s.startsWith("\uFEFF")) {
+            s = s.substring(1);
+        }
+        return s;
     }
 
     @Override

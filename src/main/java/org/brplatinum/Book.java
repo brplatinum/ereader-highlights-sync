@@ -6,7 +6,7 @@ public class Book {
     private String author;
     private String title;
     private TreeMap<Integer, Highlight> highlights; //Key = highlight location end, Value = highlight
-                                                    //Sorted by location end, ascending order
+    //Sorted by location end, ascending order
 
     public Book() {
         author = null;
@@ -21,18 +21,36 @@ public class Book {
         highlights = new TreeMap<>();
     }
 
-    public void addHighlight(Highlight newHighlight){
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void addHighlight(Highlight newHighlight) {
         highlights.put(newHighlight.getLocationEnd(), new Highlight(newHighlight));
     }
 
-    public void addNote(String note, int location){
+    public void addNote(String note, int location) {
         highlights.get(location).setNote(note);
     }
 
+    public String[] highlightsToCSV() {
+        String[] export = new String[highlights.size()];
+        int i = 0;
+        for (int currentKey : highlights.keySet()) {
+            export[i] = highlights.get(currentKey).toCSV();
+            i++;
+        }
+        return export;
+    }
+
     @Override
-    public String toString(){
+    public String toString() {
         String output = title + " (" + author + ")\n";
-        for(int currentKey : highlights.keySet()){
+        for (int currentKey : highlights.keySet()) {
             output += highlights.get(currentKey).toString();
         }
         return output;

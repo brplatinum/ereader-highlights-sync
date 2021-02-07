@@ -51,12 +51,7 @@ public class Main extends Application {
 
         cmbDeviceType = new ComboBox();
         cmbDeviceType.setItems(deviceTypeOptions);
-        cmbDeviceType.valueProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
-                device.setDeviceType((String) newValue);
-            }
-        });
+        cmbDeviceType.valueProperty().addListener((observableValue, oldValue, newValue) -> device.setDeviceType((String) newValue));
         grid.add(cmbDeviceType, 2, 0);
 
         btnChooseDevicePath = new Button();
@@ -76,7 +71,7 @@ public class Main extends Application {
         btnExtractHighlights.setText("Extract Highlights");
         btnExtractHighlights.setOnAction(actionEvent -> {
             device.extractHighlights();
-            System.out.println(device.toString());
+            device.exportToCSV();
         });
         grid.add(btnExtractHighlights, 5, 0);
 
