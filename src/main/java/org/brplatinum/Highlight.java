@@ -20,7 +20,7 @@ public class Highlight{
         this.text = text;
         this.locationStart = locationStart;
         this.locationEnd = locationEnd;
-        this.date = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("d M Y H:m:s"));
+        this.date = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("E, d M Y H:m:s"));
         note = null;
     }
 
