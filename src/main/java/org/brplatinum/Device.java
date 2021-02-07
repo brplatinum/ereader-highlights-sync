@@ -21,7 +21,7 @@ public class Device {
     public Device() {
         deviceType = null;
         path = null;
-        books = new HashMap<String, Book>();
+        books = new HashMap<String, Book>(); //Key = (book title + book author), Value = book
     }
 
     public void setDeviceType(String deviceTypeInput) {
@@ -61,7 +61,7 @@ public class Device {
 
         while (matcher.find()) {
             Highlight newHighlight;
-            if (matcher.group("locationName") != null) {
+            if (matcher.group("locationStart") != null) {
                 newHighlight = new Highlight(matcher.group("highlight"), Integer.valueOf(matcher.group("locationStart")), Integer.valueOf(matcher.group("locationEnd")));
             } else {
                 newHighlight = new Highlight(matcher.group("highlight"), Integer.valueOf(matcher.group("altLocationStart")), Integer.valueOf(matcher.group("altLocationEnd")));
@@ -105,11 +105,6 @@ public class Device {
         }
     }
 
-    private String removeUnusualCharacters(String str) {
-        return str.replaceAll("[\\u2018\\u2019]", "'")
-                .replaceAll("[\\u201C\\u201D]", "\"")
-                .replaceAll("\\u2026", "...");
-    }
 
     private void koboExtractHighlights() {
 
@@ -121,5 +116,14 @@ public class Device {
             case "Kobo" -> DeviceType.KOBO;
             default -> null;
         };
+    }
+
+    @Override
+    public String toString(){
+        String output = "";
+        for(String currentKey : books.keySet()){
+            output += books.get(currentKey).toString();
+        }
+        return output;
     }
 }

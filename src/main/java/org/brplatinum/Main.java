@@ -76,6 +76,7 @@ public class Main extends Application {
         btnExtractHighlights.setText("Extract Highlights");
         btnExtractHighlights.setOnAction(actionEvent -> {
             device.extractHighlights();
+            System.out.println(device.toString());
         });
         grid.add(btnExtractHighlights, 5, 0);
 
