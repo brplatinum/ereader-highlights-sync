@@ -124,7 +124,7 @@ public class Device {
             for (String currentKey : books.keySet()) {
                 String[] bookHighlights = books.get(currentKey).highlightsToCSV();
                 for (String highlight : bookHighlights) {
-                    String lineOutput = CSVHelper.csvFix(books.get(currentKey).getTitle()) + "," + CSVHelper.csvFix(books.get(currentKey).getAuthor()) + highlight;
+                    String lineOutput = TextHelper.csvFix(books.get(currentKey).getTitle()) + "," + TextHelper.csvFix(books.get(currentKey).getAuthor()) + highlight;
                     csvWriter.write(lineOutput + "\n");
                 }
             }

@@ -61,12 +61,12 @@ public class Highlight {
 
     public String toCSV() {
         String output = "";
-        output += "," + CSVHelper.csvFix(text);
-        output += "," + CSVHelper.csvFix(locationStart);
-        output += "," + CSVHelper.csvFix(date.withZoneSameInstant(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        output += "," + TextHelper.csvFix(text);
+        output += "," + TextHelper.csvFix(locationStart);
+        output += "," + TextHelper.csvFix(date.withZoneSameInstant(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         output += ",";
         if (note != null) {
-            output += CSVHelper.csvFix(note);
+            output += TextHelper.csvFix(note);
         }
 
         return output;
