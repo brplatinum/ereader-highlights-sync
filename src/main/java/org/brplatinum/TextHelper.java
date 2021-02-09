@@ -9,18 +9,9 @@ public class TextHelper {
         String fixedInput = input.replaceAll("\\r\\n", " ");
         fixedInput = fixedInput.replaceAll("\\r", " ");
         fixedInput = fixedInput.replaceAll("\\n", " ");
-        fixedInput = removeSpecialCharacters(fixedInput);
         if (fixedInput.contains(",") || fixedInput.contains("\"") || fixedInput.contains("'")) {
             fixedInput = fixedInput.replaceAll("\"", "\"\"");
             fixedInput = "\"" + fixedInput + "\"";
-        }
-        return fixedInput;
-    }
-
-    public static String removeSpecialCharacters(String input) {
-        String fixedInput = input;
-        for (int i = 0; i < specialCharacters.length; i++) {
-            fixedInput = fixedInput.replaceAll(specialCharacters[i], specialCharacterReplacements[i]);
         }
         return fixedInput;
     }
