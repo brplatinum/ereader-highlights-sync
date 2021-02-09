@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
@@ -21,6 +22,7 @@ public class Main extends Application {
     Button btnDeviceInfo;
     Button btnChooseDevicePath;
     Button btnExtractHighlights;
+    Button btnExportEmail;
 
     ComboBox cmbDeviceType;
 
@@ -36,13 +38,11 @@ public class Main extends Application {
         device = new Device();
         directoryChooser = new DirectoryChooser();
 
-        GridPane grid = new GridPane();
+        VBox layout = new VBox(20);
 
         stage.setTitle("Ereader Highlights Sync");
 
-        btnDeviceInfo = new Button();
-        btnDeviceInfo.setText("Device");
-        grid.add(btnDeviceInfo, 1, 0);
+        btnDeviceInfo = new Button("Device");
 
         ObservableList<String> deviceTypeOptions = FXCollections.observableArrayList(
                 "Kindle",
@@ -52,30 +52,31 @@ public class Main extends Application {
         cmbDeviceType = new ComboBox();
         cmbDeviceType.setItems(deviceTypeOptions);
         cmbDeviceType.valueProperty().addListener((observableValue, oldValue, newValue) -> device.setDeviceType((String) newValue));
-        grid.add(cmbDeviceType, 2, 0);
 
-        btnChooseDevicePath = new Button();
-        btnChooseDevicePath.setText("Choose Device Path");
+        btnChooseDevicePath = new Button("Choose Device Path");
         btnChooseDevicePath.setOnAction(actionEvent -> {
             File file = directoryChooser.showDialog(stage);
 
             device.setPath(file.toString());
 
-            lblDevicePath = new Label();
-            lblDevicePath.setText(file.toString());
-            grid.add(lblDevicePath, 4, 0);
+            lblDevicePath = new Label(file.toString());
+            layout.getChildren().add(lblDevicePath);
         });
-        grid.add(btnChooseDevicePath, 3, 0);
 
-        btnExtractHighlights = new Button();
-        btnExtractHighlights.setText("Extract Highlights");
+        btnExtractHighlights = new Button("Extract Highlights");
         btnExtractHighlights.setOnAction(actionEvent -> {
             device.extractHighlights();
             device.exportToCSV();
         });
-        grid.add(btnExtractHighlights, 5, 0);
 
-        Scene scene = new Scene(grid, 300, 250);
+        btnExportEmail = new Button("Export to Email");
+        btnExportEmail.setOnAction(actionEvent -> {
+            EmailView.display();
+        });
+
+        layout.getChildren().addAll(btnDeviceInfo, cmbDeviceType, btnChooseDevicePath, btnExtractHighlights, btnExportEmail);
+
+        Scene scene = new Scene(layout, 300, 250);
         stage.setScene(scene);
         stage.show();
     }
