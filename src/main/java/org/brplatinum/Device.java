@@ -48,7 +48,7 @@ public class Device {
         String highlightsStringClump = "";
 
         try {
-            highlightsStringClump = removeBOM(Files.readString(filePath, StandardCharsets.UTF_8));
+            highlightsStringClump = TextHelper.removeBOM(Files.readString(filePath, StandardCharsets.UTF_8));
         } catch (IOException e) {
             System.err.print(e.toString());
         }
@@ -76,7 +76,7 @@ public class Device {
         String notesClump = "";
 
         try {
-            notesClump = removeBOM(Files.readString(filePath, StandardCharsets.UTF_8));
+            notesClump = TextHelper.removeBOM(Files.readString(filePath, StandardCharsets.UTF_8));
         } catch (IOException e) {
             System.err.print(e.toString());
         }
@@ -141,13 +141,6 @@ public class Device {
             case "Kobo" -> DeviceType.KOBO;
             default -> null;
         };
-    }
-
-    private static String removeBOM(String s) {
-        if (s.startsWith("\uFEFF")) {
-            s = s.substring(1);
-        }
-        return s;
     }
 
     @Override

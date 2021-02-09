@@ -22,4 +22,44 @@ public class EmailServer {
         this.port = port;
         this.encryption = encryption;
     }
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public Encryption getEncryption() {
+        return encryption;
+    }
+
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public void setEncryption(Encryption encryption) {
+        this.encryption = encryption;
+    }
 }

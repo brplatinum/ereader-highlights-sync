@@ -9,17 +9,42 @@ import javafx.stage.Stage;
 
 public class EmailView {
 
+
     public static void display() {
+        EmailServer server = new EmailServer();
+        String destinationEmail;
+
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setMinWidth(400);
 
         TextField txtHostname = new TextField();
+        txtHostname.setOnKeyReleased(actionEvent -> {
+            server.setHostname(txtHostname.getText());
+        });
+
+
         TextField txtUserEmail = new TextField();
+        txtUserEmail.setOnKeyReleased(actionEvent -> {
+            server.setUsername(txtUserEmail.getText());
+        });
+
         PasswordField pwfUserPassword = new PasswordField();
+        pwfUserPassword.setOnKeyReleased(actionEvent -> {
+            server.setPassword(pwfUserPassword.getText());
+        });
+
         TextField txtDestinationEmail = new TextField();
+        txtDestinationEmail.setOnKeyReleased(actionEvent -> {
+            destinationEmail = txtDestinationEmail.getText();
+        });
+
         Spinner spnPort = new Spinner(1, Integer.MAX_VALUE, 1);
+        spnPort.setOnKeyReleased(actionEvent -> {
+            server.setPort(Integer.parseInt(spnPort.getAccessibleText()));
+        });
+
         spnPort.setEditable(true);
 
         ToggleGroup tggEncryptionTypes = new ToggleGroup();
@@ -41,6 +66,9 @@ public class EmailView {
 
 
         Button btnSendEmail = new Button("Send");
+        btnSendEmail.setOnAction(actionEvent -> {
+            Email.sendEmail(server, destinationEmail);
+        });
 
         VBox layout = new VBox(10);
         layout.getChildren().addAll(lblUserEmail, txtUserEmail, lblUserPassword, pwfUserPassword, lblHostName, txtHostname, lblPort, spnPort, lblEncryption, rdbTLS, rdbSSL, rdbNone, lblDestinationEmail, txtDestinationEmail, btnSendEmail);

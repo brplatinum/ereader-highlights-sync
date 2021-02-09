@@ -55,8 +55,8 @@ public class Highlight {
         return date;
     }
 
-    public void setNote(String noteInput) {
-        note = noteInput;
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public String toCSV() {

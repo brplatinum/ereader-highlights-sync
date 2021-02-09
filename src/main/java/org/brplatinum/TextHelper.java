@@ -20,4 +20,11 @@ public class TextHelper {
         return csvFix(Integer.toString(input));
     }
 
+    public static String removeBOM(String s) {
+        if (s.startsWith("\uFEFF")) {
+            s = s.substring(1);
+        }
+        return s;
+    }
+
 }
