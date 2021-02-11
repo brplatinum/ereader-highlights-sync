@@ -23,6 +23,18 @@ public class EmailServer {
         this.encryption = encryption;
     }
 
+    public EmailServer(String hostname, String username, String password, String port, Encryption encryption) {
+        this.hostname = hostname;
+        this.username = username;
+        this.password = password;
+        if (port.isEmpty()) {
+            this.port = 0;
+        } else {
+            this.port = Integer.parseInt(port);
+        }
+        this.encryption = encryption;
+    }
+
     public String getHostname() {
         return hostname;
     }

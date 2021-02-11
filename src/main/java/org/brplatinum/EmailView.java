@@ -8,41 +8,36 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class EmailView {
+    private static EmailServer server = new EmailServer();
+    private static String destinationEmail;
 
+    private static TextField txtHostname = new TextField();
+    private static TextField txtUserEmail = new TextField();
+    private static PasswordField pwfUserPassword = new PasswordField();
+    private static TextField txtDestinationEmail = new TextField();
+    private static Spinner<String> spnPort = new Spinner<>(0, 65535, 1);
 
     public static void display() {
-        EmailServer server = new EmailServer();
-        String destinationEmail;
 
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setMinWidth(400);
 
-        TextField txtHostname = new TextField();
-        txtHostname.setOnKeyReleased(actionEvent -> {
-            server.setHostname(txtHostname.getText());
+        spnPort.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                spnPort.getEditor().setText(oldValue);
+            } else if (!newValue.isEmpty()){
+                if (Integer.parseInt(newValue) > 65535 || Integer.parseInt(newValue) < 0) {
+                    spnPort.getEditor().setText(oldValue);
+                }
+            }
         });
 
-
-        TextField txtUserEmail = new TextField();
-        txtUserEmail.setOnKeyReleased(actionEvent -> {
-            server.setUsername(txtUserEmail.getText());
-        });
-
-        PasswordField pwfUserPassword = new PasswordField();
-        pwfUserPassword.setOnKeyReleased(actionEvent -> {
-            server.setPassword(pwfUserPassword.getText());
-        });
-
-        TextField txtDestinationEmail = new TextField();
-        txtDestinationEmail.setOnKeyReleased(actionEvent -> {
-            destinationEmail = txtDestinationEmail.getText();
-        });
-
-        Spinner spnPort = new Spinner(1, Integer.MAX_VALUE, 1);
         spnPort.setOnKeyReleased(actionEvent -> {
-            server.setPort(Integer.parseInt(spnPort.getAccessibleText()));
+            if (!spnPort.getValue().isEmpty()) {
+                server.setPort(Integer.parseInt(spnPort.getValue()));
+            }
         });
 
         spnPort.setEditable(true);
@@ -67,6 +62,7 @@ public class EmailView {
 
         Button btnSendEmail = new Button("Send");
         btnSendEmail.setOnAction(actionEvent -> {
+            EmailServer server = new EmailServer(txtHostname.getText(), txtUserEmail.getText(), pwfUserPassword.getText(), spnPort.getValue(), Encryption.valueOf(tggEncryptionTypes.getSelectedToggle().getUserData().toString().toUpperCase()));
             Email.sendEmail(server, destinationEmail);
         });
 

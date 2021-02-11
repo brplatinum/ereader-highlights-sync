@@ -23,7 +23,7 @@ public class Device {
     }
 
     public void setDeviceType(String deviceTypeInput) {
-        deviceType = deviceTypeConvert(deviceTypeInput);
+        deviceType = DeviceType.valueOf(deviceTypeInput.toUpperCase());
     }
 
     public void setPath(String pathInput) {
@@ -135,13 +135,13 @@ public class Device {
         }
     }
 
-    private DeviceType deviceTypeConvert(String deviceType) { //Maps the string name of the device type to the enum
-        return switch (deviceType) {
-            case "Kindle" -> DeviceType.KINDLE;
-            case "Kobo" -> DeviceType.KOBO;
-            default -> null;
-        };
-    }
+//    private DeviceType deviceTypeConvert(String deviceType) { //Maps the string name of the device type to the enum
+//        return switch (deviceType) {
+//            case "Kindle" -> DeviceType.KINDLE;
+//            case "Kobo" -> DeviceType.KOBO;
+//            default -> null;
+//        };
+//    }
 
     @Override
     public String toString() {
