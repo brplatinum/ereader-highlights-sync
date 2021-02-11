@@ -1,5 +1,6 @@
 module org.brplatinum {
     requires javafx.controls;
-    requires javax.mail.api;
+    requires java.mail;
+    requires activation;
     exports org.brplatinum;
 }

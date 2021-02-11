@@ -44,6 +44,7 @@ public class Email {
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(destinationEmail));
             message.setSubject("Your Highlights");
             message.setText("Your Highlights");
+            return message;
         } catch (Exception e) {
             System.err.println(e);
         }

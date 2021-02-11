@@ -8,14 +8,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class EmailView {
-    private static EmailServer server = new EmailServer();
-    private static String destinationEmail;
-
     private static TextField txtHostname = new TextField();
     private static TextField txtUserEmail = new TextField();
     private static PasswordField pwfUserPassword = new PasswordField();
     private static TextField txtDestinationEmail = new TextField();
-    private static Spinner<String> spnPort = new Spinner<>(0, 65535, 1);
+    private static Spinner<Integer> spnPort = new Spinner<>(0, 65535, 1);
 
     public static void display() {
 
@@ -31,12 +28,6 @@ public class EmailView {
                 if (Integer.parseInt(newValue) > 65535 || Integer.parseInt(newValue) < 0) {
                     spnPort.getEditor().setText(oldValue);
                 }
-            }
-        });
-
-        spnPort.setOnKeyReleased(actionEvent -> {
-            if (!spnPort.getValue().isEmpty()) {
-                server.setPort(Integer.parseInt(spnPort.getValue()));
             }
         });
 
@@ -62,7 +53,8 @@ public class EmailView {
 
         Button btnSendEmail = new Button("Send");
         btnSendEmail.setOnAction(actionEvent -> {
-            EmailServer server = new EmailServer(txtHostname.getText(), txtUserEmail.getText(), pwfUserPassword.getText(), spnPort.getValue(), Encryption.valueOf(tggEncryptionTypes.getSelectedToggle().getUserData().toString().toUpperCase()));
+            EmailServer server = new EmailServer(txtHostname.getText(), txtUserEmail.getText(), pwfUserPassword.getText(), spnPort.getValue(), Encryption.valueOf(((RadioButton) tggEncryptionTypes.getSelectedToggle()).getText().toUpperCase()));
+            String destinationEmail = txtDestinationEmail.getText();
             Email.sendEmail(server, destinationEmail);
         });
 
