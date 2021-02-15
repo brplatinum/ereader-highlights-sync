@@ -1,11 +1,12 @@
 package org.brplatinum;
 
+import java.time.ZonedDateTime;
 import java.util.*;
 
 public class Book {
     private String author;
     private String title;
-    private TreeMap<Integer, Highlight> highlights; //Key = highlight location end, Value = highlight
+    private TreeMap<ZonedDateTime, Highlight> highlights; //Key = highlight location end, Value = highlight
     //Sorted by location end, ascending order
 
     public Book() {
@@ -30,7 +31,7 @@ public class Book {
     }
 
     public void addHighlight(Highlight newHighlight) {
-        highlights.put(newHighlight.getLocationEnd(), new Highlight(newHighlight));
+        highlights.put(newHighlight.getDate(), new Highlight(newHighlight));
     }
 
     public void addNote(String note, int location) {
@@ -40,7 +41,7 @@ public class Book {
     public String[] highlightsToCSV() {
         String[] export = new String[highlights.size()];
         int i = 0;
-        for (int currentKey : highlights.keySet()) {
+        for (ZonedDateTime currentKey : highlights.keySet()) {
             export[i] = highlights.get(currentKey).toCSV();
             i++;
         }
@@ -50,7 +51,7 @@ public class Book {
     @Override
     public String toString() {
         String output = title + " (" + author + ")\n";
-        for (int currentKey : highlights.keySet()) {
+        for (ZonedDateTime currentKey : highlights.keySet()) {
             output += highlights.get(currentKey).toString();
         }
         return output;

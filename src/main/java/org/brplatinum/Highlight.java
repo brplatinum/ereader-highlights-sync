@@ -1,5 +1,6 @@
 package org.brplatinum;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -16,10 +17,18 @@ public class Highlight {
 
     public Highlight() {
         text = null;
-        note = null;
+        note = "";
         locationStart = -1;
         locationEnd = -1;
         date = null;
+    }
+
+    public Highlight(String text, Timestamp date) { //Kobo highlights do not have locations
+        this.text = text;
+        note = "";
+        locationStart = -1;
+        locationEnd = -1;
+        this.date = date.toLocalDateTime().atZone(TimeZone.getDefault().toZoneId());
     }
 
     public Highlight(String text, int locationStart, int locationEnd, String date) {
@@ -27,8 +36,9 @@ public class Highlight {
         this.locationStart = locationStart;
         this.locationEnd = locationEnd;
         LocalDateTime localDateTime = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy HH:mm:ss"));
-        this.date = localDateTime.atZone(TimeZone.getDefault().toZoneId());;
-        note = null;
+        this.date = localDateTime.atZone(TimeZone.getDefault().toZoneId());
+        ;
+        note = "";
     }
 
     public Highlight(Highlight newHighlight) {
@@ -36,7 +46,7 @@ public class Highlight {
         locationStart = newHighlight.getLocationStart();
         locationEnd = newHighlight.getLocationEnd();
         date = newHighlight.getDate();
-        note = null;
+        note = newHighlight.getNote();
     }
 
     public String getText() {
@@ -51,6 +61,10 @@ public class Highlight {
         return locationEnd;
     }
 
+    public String getNote() {
+        return note;
+    }
+
     public ZonedDateTime getDate() {
         return date;
     }
@@ -62,13 +76,14 @@ public class Highlight {
     public String toCSV() {
         String output = "";
         output += "," + TextHelper.csvFix(text);
-        output += "," + TextHelper.csvFix(locationStart);
+        if (locationStart != -1) {
+            output += "," + TextHelper.csvFix(locationStart);
+        } else {
+            output += ",";
+        }
         output += "," + TextHelper.csvFix(date.withZoneSameInstant(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         output += ",";
-        if (note != null) {
-            output += TextHelper.csvFix(note);
-        }
-
+        output += TextHelper.csvFix(note);
         return output;
     }
 

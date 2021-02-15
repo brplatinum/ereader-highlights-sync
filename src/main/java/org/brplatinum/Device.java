@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.sql.*;
 
 public class Device {
     private DeviceType deviceType;
@@ -62,7 +63,6 @@ public class Device {
                 newHighlight = new Highlight(matcher.group("highlight"), Integer.valueOf(matcher.group("locationStart")), Integer.valueOf(matcher.group("locationEnd")), matcher.group("date"));
             } else {
                 newHighlight = new Highlight(matcher.group("highlight"), Integer.valueOf(matcher.group("altLocationStart")), Integer.valueOf(matcher.group("altLocationEnd")), matcher.group("date"));
-
             }
             addHighlightToBook(matcher.group("title"), matcher.group("author"), newHighlight);
         }
@@ -104,6 +104,32 @@ public class Device {
 
 
     private void koboExtractHighlights() {
+        String separator = System.getProperty("file.separator");
+        String filePath = "jdbc:sqlite:" + path + ".kobo" + separator + "KoboReader.sqlite";
+        Connection connection = null;
+        Statement highlightsStatement = null;
+        Statement bookStatement = null;
+
+        try {
+            connection = DriverManager.getConnection(filePath);
+            highlightsStatement = connection.createStatement();
+            ResultSet highlights = highlightsStatement.executeQuery("SELECT Text, DateCreated, Annotation, VolumeID FROM Bookmark");
+            while (highlights.next()) {
+                Highlight newHighlight = new Highlight(highlights.getString("Text"), Timestamp.valueOf(highlights.getString("DateCreated").replace("T", " ")));
+                newHighlight.setNote(highlights.getString("Annotation").trim());
+                String volumeID = "\"" + highlights.getString("VolumeID") + "\"";
+                bookStatement = connection.createStatement();
+                ResultSet matchingBook = bookStatement.executeQuery("SELECT `Title`, `Attribution` FROM content WHERE ContentID = " + volumeID);
+                while (matchingBook.next()) {
+                    addHighlightToBook(matchingBook.getString("Title"), matchingBook.getString("Attribution"), newHighlight);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.print(e.toString());
+        }
+    }
+
+    private void koboExtractNotes() {
 
     }
 
@@ -135,13 +161,6 @@ public class Device {
         }
     }
 
-//    private DeviceType deviceTypeConvert(String deviceType) { //Maps the string name of the device type to the enum
-//        return switch (deviceType) {
-//            case "Kindle" -> DeviceType.KINDLE;
-//            case "Kobo" -> DeviceType.KOBO;
-//            default -> null;
-//        };
-//    }
 
     @Override
     public String toString() {
