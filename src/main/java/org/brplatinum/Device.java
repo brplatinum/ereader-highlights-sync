@@ -23,6 +23,12 @@ public class Device {
         books = new HashMap<String, Book>(); //Key = (book title + book author), Value = book
     }
 
+    public Device(DeviceType deviceType, String path) {
+        this.deviceType = deviceType;
+        this.path = path;
+        books = new HashMap<String, Book>(); //Key = (book title + book author), Value = book
+    }
+
     public void setDeviceType(String deviceTypeInput) {
         deviceType = DeviceType.valueOf(deviceTypeInput.toUpperCase());
     }
