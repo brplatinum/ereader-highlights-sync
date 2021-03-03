@@ -1,8 +1,7 @@
-package org.brplatinum;
+package org.brplatinum.model;
 
 import javax.mail.*;
 import java.util.Properties;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 

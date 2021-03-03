@@ -1,4 +1,4 @@
-package org.brplatinum;
+package org.brplatinum.model;
 
 public enum DeviceType {
     KINDLE,

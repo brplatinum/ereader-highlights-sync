@@ -1,4 +1,4 @@
-package org.brplatinum;
+package org.brplatinum.model;
 
 import java.time.ZonedDateTime;
 import java.util.*;

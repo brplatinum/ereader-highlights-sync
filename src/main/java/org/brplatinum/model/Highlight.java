@@ -1,7 +1,8 @@
-package org.brplatinum;
+package org.brplatinum.model;
+
+import org.brplatinum.helper.TextHelper;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

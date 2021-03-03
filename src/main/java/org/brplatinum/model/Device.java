@@ -1,4 +1,6 @@
-package org.brplatinum;
+package org.brplatinum.model;
+
+import org.brplatinum.helper.TextHelper;
 
 import java.io.File;
 import java.io.FileWriter;

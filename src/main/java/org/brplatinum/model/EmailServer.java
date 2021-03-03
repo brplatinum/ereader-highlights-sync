@@ -1,4 +1,6 @@
-package org.brplatinum;
+package org.brplatinum.model;
+
+import org.brplatinum.model.Encryption;
 
 public class EmailServer {
     private String hostname;

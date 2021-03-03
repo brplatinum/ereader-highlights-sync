@@ -1,4 +1,4 @@
-package org.brplatinum;
+package org.brplatinum.helper;
 
 public class TextHelper {
     //Parallel arrays for removing special characters
