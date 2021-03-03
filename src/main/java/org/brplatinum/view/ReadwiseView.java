@@ -20,12 +20,12 @@ public class ReadwiseView {
         readwiseLayout.add(lblAccessToken, 0, 0, 1, 1);
 
         txtAccessToken = new TextField();
-        readwiseLayout.add(txtAccessToken, 0, 1, 1, 1);
+        readwiseLayout.add(txtAccessToken, 1, 0, 1, 1);
         txtAccessToken.setMinHeight(50);
         txtAccessToken.setMinWidth(100);
 
         btnSendHighlights = new Button("Send");
-        readwiseLayout.add(btnSendHighlights, 0, 2, 1, 1);
+        readwiseLayout.add(btnSendHighlights, 2, 0, 1, 1);
         btnSendHighlights.setMinHeight(50);
         btnSendHighlights.setMinWidth(100);
     }

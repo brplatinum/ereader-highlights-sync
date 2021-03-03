@@ -28,7 +28,7 @@ public class EmailView {
         btnEmailSettings.setMinWidth(100);
 
         lblDestinationEmail = new Label("Send to:");
-        emailLayout.add(lblDestinationEmail, 1, 0, 1, 1);
+        emailLayout.add(lblDestinationEmail, 0, 1, 1, 1);
 
         txtDestinationEmail = new TextField();
         emailLayout.add(txtDestinationEmail, 1, 1, 1, 1);

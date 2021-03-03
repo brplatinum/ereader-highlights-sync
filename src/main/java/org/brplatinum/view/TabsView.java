@@ -27,6 +27,7 @@ public class TabsView {
         Tab readwiseTab = new Tab("Readwise", readwiseView.getView());
 
         tabs.getTabs().addAll(exportToFileTab, emailTab, readwiseTab);
+        tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         container.getChildren().add(tabs);
     }
 
