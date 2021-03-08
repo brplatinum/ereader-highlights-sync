@@ -4,5 +4,6 @@ module org.brplatinum {
     requires activation;
     requires java.sql;
     requires sqlite.jdbc;
+    requires org.json;
     exports org.brplatinum;
 }

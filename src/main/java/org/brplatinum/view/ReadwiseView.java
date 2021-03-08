@@ -5,13 +5,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import org.brplatinum.model.Device;
+import org.brplatinum.model.DeviceType;
 
 public class ReadwiseView {
-    GridPane readwiseLayout;
+    private GridPane readwiseLayout;
 
-    Label lblAccessToken;
-    TextField txtAccessToken;
-    Button btnSendHighlights;
+    private Label lblAccessToken;
+    private TextField txtAccessToken;
+    private Button btnSendHighlights;
 
     public ReadwiseView(){
         readwiseLayout = new GridPane();
@@ -28,6 +30,12 @@ public class ReadwiseView {
         readwiseLayout.add(btnSendHighlights, 2, 0, 1, 1);
         btnSendHighlights.setMinHeight(50);
         btnSendHighlights.setMinWidth(100);
+
+        btnSendHighlights.setOnAction(actionEvent -> {
+            Device device = new Device();
+//            device.extractHighlights();
+//            device.exportToCSV();
+        });
     }
 
     public Pane getView() {

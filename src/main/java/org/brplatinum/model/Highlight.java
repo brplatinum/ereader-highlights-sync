@@ -88,6 +88,20 @@ public class Highlight {
         return output;
     }
 
+    public String toJSON() {
+        String output = "";
+        output += "," + TextHelper.csvFix(text);
+        if (locationStart != -1) {
+            output += "," + TextHelper.csvFix(locationStart);
+        } else {
+            output += ",";
+        }
+        output += "," + TextHelper.csvFix(date.withZoneSameInstant(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        output += ",";
+        output += TextHelper.csvFix(note);
+        return output;
+    }
+
     @Override
     public String toString() {
         String output = "\tFrom location " + locationStart + " - " + locationEnd + "\n\t" + text + "\n";

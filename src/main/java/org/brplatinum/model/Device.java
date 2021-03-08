@@ -1,6 +1,8 @@
 package org.brplatinum.model;
 
 import org.brplatinum.helper.TextHelper;
+import org.json.JSONObject;
+import org.json.JSONArray;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -9,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,6 +26,7 @@ public class Device {
         deviceType = null;
         path = null;
         books = new HashMap<String, Book>(); //Key = (book title + book author), Value = book
+//        books = importFromJSON();
     }
 
     public Device(DeviceType deviceType, String path) {
@@ -30,6 +34,7 @@ public class Device {
         this.path = path;
         books = new HashMap<String, Book>(); //Key = (book title + book author), Value = book
     }
+
 
     public void setDeviceType(String deviceTypeInput) {
         deviceType = DeviceType.valueOf(deviceTypeInput.toUpperCase());
@@ -48,6 +53,7 @@ public class Device {
             case KOBO:
                 koboExtractHighlights();
         }
+        exportToJSON();
     }
 
     private void kindleExtractHighlights() {
@@ -137,8 +143,22 @@ public class Device {
         }
     }
 
-    private void koboExtractNotes() {
+    public void exportToJSON() {
+       JSONArray booksArray = new JSONArray();
 
+        for(Map.Entry<String, Book> bookEntry : books.entrySet()) {
+            JSONObject bookObject = new JSONObject();
+
+            bookObject.put("title", bookEntry.getValue().getTitle());
+            bookObject.put("author", bookEntry.getValue().getAuthor());
+
+            JSONArray highlightArray = bookEntry.getValue().highlightsToJSON();
+
+            bookObject.put("highlights", highlightArray);
+            booksArray.put(bookObject);
+        }
+
+       System.out.println(booksArray);
     }
 
     public void exportToCSV() {

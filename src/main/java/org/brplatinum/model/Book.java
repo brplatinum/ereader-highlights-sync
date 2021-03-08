@@ -1,19 +1,21 @@
 package org.brplatinum.model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.time.ZonedDateTime;
 import java.util.*;
 
 public class Book {
     private String author;
     private String title;
-    private TreeMap<ZonedDateTime, Highlight> highlights; //Key = highlight location end, Value = highlight
+    private HashMap<ZonedDateTime, Highlight> highlights; //Key = highlight location end, Value = highlight
     //Sorted by location end, ascending order
 
     public Book() {
         author = null;
         title = null;
-        highlights = new TreeMap<>() {
-        };
+        highlights = new TreeMap<>();
     }
 
     public Book(String title, String author) {
@@ -30,6 +32,10 @@ public class Book {
         return title;
     }
 
+    public TreeMap getHighlights() {
+        return highlights;
+    }
+
     public void addHighlight(Highlight newHighlight) {
         highlights.put(newHighlight.getDate(), new Highlight(newHighlight));
     }
@@ -43,6 +49,16 @@ public class Book {
         int i = 0;
         for (ZonedDateTime currentKey : highlights.keySet()) {
             export[i] = highlights.get(currentKey).toCSV();
+            i++;
+        }
+        return export;
+    }
+
+    public JSONArray highlightsToJSON() {
+        JSONArray highlightsArray = new JSONArray();
+        int i = 0;
+        for (ZonedDateTime currentKey : highlights.keySet()) {
+            JSONObject highlightsObject = highlights.get(currentKey).toJSON();
             i++;
         }
         return export;
